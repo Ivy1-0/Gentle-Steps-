@@ -1,567 +1,466 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>Gentle Steps | Couch to 5K</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --mint:#DDF4E7;
-  --blue:#E7F3FF;
-  --orange:#FFE6C7;
-  --success:#B9E8C5;
-  --white:#ffffff;
-  --text:#2D3748;
-  --muted:#718096;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  font-family:'Inter',sans-serif;
-  background:#f8fbfc;
-  color:var(--text);
-}
-
-.screen{
-  min-height:100vh;
-  padding:20px;
-}
-
-.hidden{
-  display:none;
-}
-
-.card{
-  background:white;
-  border-radius:24px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 8px 24px rgba(0,0,0,.06);
-}
-
-h1{
-  font-size:1.9rem;
-  margin-bottom:8px;
-}
-
-p{
-  color:var(--muted);
-}
-
-.primary-btn{
-  width:100%;
-  border:none;
-  border-radius:24px;
-  background:var(--mint);
-  padding:24px;
-  font-size:1.2rem;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.primary-btn:hover{
-  opacity:.95;
-}
-
-.weekline{
-  display:flex;
-  justify-content:space-between;
-  margin-top:15px;
-}
-
-.weekdot{
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:#d7dde5;
-}
-
-.weekdot.active{
-  background:#79d39b;
-}
-
-.badges{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.badge{
-  background:#f3f7fa;
-  padding:10px 14px;
-  border-radius:14px;
-}
-
-#runScreen{
-  transition:all .5s ease;
-}
-
-.walk{
-  background:var(--blue);
-}
-
-.jog{
-  background:var(--orange);
-}
-
-.phase{
-  text-align:center;
-  margin-top:40px;
-  font-size:2rem;
-  font-weight:700;
-}
-
-.subtitle{
-  text-align:center;
-  font-size:1rem;
-  color:var(--muted);
-  margin-top:10px;
-}
-
-.timer{
-  text-align:center;
-  font-size:clamp(4rem,18vw,7rem);
-  font-weight:700;
-  margin-top:40px;
-}
-
-.controls{
-  display:flex;
-  gap:12px;
-  margin-top:30px;
-}
-
-.control-btn{
-  flex:1;
-  border:none;
-  border-radius:20px;
-  min-height:60px;
-  font-size:1rem;
-  font-weight:600;
-  cursor:pointer;
-}
-
-.pause{
-  background:white;
-}
-
-.stop{
-  background:#fff3f3;
-}
-
-.talk-btn{
-  width:100%;
-  border:none;
-  border-radius:24px;
-  padding:22px;
-  background:white;
-  font-size:1.1rem;
-  font-weight:600;
-  margin-top:40px;
-  cursor:pointer;
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.45);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.modal-box{
-  width:90%;
-  max-width:400px;
-  background:white;
-  border-radius:24px;
-  padding:24px;
-  text-align:center;
-}
-
-.modal-box h3{
-  margin-bottom:15px;
-}
-
-.modal-btn{
-  margin-top:20px;
-  width:100%;
-  border:none;
-  background:var(--mint);
-  border-radius:16px;
-  padding:15px;
-  font-weight:700;
-}
-
-.success{
-  text-align:center;
-  margin-top:50px;
-}
-
-.success h1{
-  margin-top:10px;
-}
-
-.history-item{
-  padding:14px;
-  background:#f5f9fc;
-  border-radius:16px;
-  margin-top:10px;
-}
-
-.emoji{
-  font-size:5rem;
-}
-
-.streak{
-  font-size:2rem;
-  font-weight:700;
-  margin-top:10px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gentle Steps | Couch to 5K</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f8fbfc; color:#2D3748; }
+    .screen { min-height:100vh; padding:20px; }
+    .hidden { display:none !important; }
+    .card { background:white; border-radius:24px; padding:20px; margin-bottom:16px; box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+    h1 { font-size:1.9rem; margin-bottom:8px; }
+    p { color:#718096; }
+    .primary-btn { width:100%; border:none; border-radius:24px; background:#DDF4E7; padding:24px; font-size:1.2rem; font-weight:700; cursor:pointer; transition:0.2s; }
+    .primary-btn:hover { opacity:0.85; transform:scale(0.98); }
+    .weekline { display:flex; justify-content:space-between; margin-top:15px; }
+    .weekdot { width:18px; height:18px; border-radius:50%; background:#d7dde5; transition:0.3s; }
+    .weekdot.active { background:#79d39b; transform:scale(1.2); }
+    .badges { display:flex; gap:10px; flex-wrap:wrap; }
+    .badge { background:#f3f7fa; padding:10px 14px; border-radius:14px; font-weight:500; }
+    .walk { background:#E7F3FF; transition:background 0.4s; }
+    .jog { background:#FFE6C7; transition:background 0.4s; }
+    .phase { text-align:center; margin-top:40px; font-size:2rem; font-weight:700; }
+    .subtitle { text-align:center; font-size:1rem; color:#718096; margin-top:10px; }
+    .timer { text-align:center; font-size:clamp(4rem,18vw,7rem); font-weight:700; margin-top:40px; letter-spacing:2px; font-variant-numeric:tabular-nums; }
+    .controls { display:flex; gap:12px; margin-top:30px; }
+    .control-btn { flex:1; border:none; border-radius:20px; min-height:60px; font-size:1rem; font-weight:600; cursor:pointer; transition:0.2s; }
+    .control-btn:active { transform:scale(0.96); }
+    .pause { background:white; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .stop { background:#fff3f3; color:#b33; }
+    .talk-btn { width:100%; border:none; border-radius:24px; padding:22px; background:white; font-size:1.1rem; font-weight:600; margin-top:40px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.03); transition:0.2s; }
+    .talk-btn:active { transform:scale(0.97); }
+    .modal { position:fixed; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; z-index:100; }
+    .modal-box { width:90%; max-width:400px; background:white; border-radius:24px; padding:24px; text-align:center; animation:pop 0.25s ease; }
+    @keyframes pop { 0% { transform:scale(0.92); opacity:0; } 100% { transform:scale(1); opacity:1; } }
+    .modal-box h3 { margin-bottom:15px; }
+    .modal-btn { margin-top:20px; width:100%; border:none; background:#DDF4E7; border-radius:16px; padding:15px; font-weight:700; font-size:1rem; cursor:pointer; }
+    .success { text-align:center; margin-top:30px; }
+    .success h1 { margin-top:10px; }
+    .history-item { padding:14px; background:#f5f9fc; border-radius:16px; margin-top:10px; border-left:4px solid #79d39b; }
+    .emoji { font-size:5rem; line-height:1.2; }
+    .streak { font-size:2rem; font-weight:700; margin-top:10px; color:#2D3748; }
+    #history { margin-top:8px; }
+    .subnote { font-size:0.9rem; color:#718096; margin-top:8px; }
+    .name-input-area { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    .name-input-area input { flex:1; min-width:140px; padding:14px 16px; border:2px solid #e2e8f0; border-radius:20px; font-size:1rem; outline:none; transition:0.2s; }
+    .name-input-area input:focus { border-color:#79d39b; }
+    .name-input-area button { background:#DDF4E7; border:none; border-radius:20px; padding:14px 24px; font-weight:600; cursor:pointer; transition:0.2s; }
+    .name-input-area button:hover { background:#b8e0c9; }
+    .greeting { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .greeting .edit-name { background:transparent; border:1px solid #d7dde5; border-radius:30px; padding:6px 14px; font-size:0.8rem; cursor:pointer; color:#4a5568; transition:0.2s; }
+    .greeting .edit-name:hover { background:#f0f4f8; }
+  </style>
 </head>
 <body>
 
 <!-- HOME -->
-
 <div id="homeScreen" class="screen">
+  <div class="card">
+    <div class="greeting">
+      <h1 id="greetingText">Welcome back!</h1>
+    </div>
+    <p>Ready for some easy intervals today?</p>
+    <!-- Name input (hidden by default) -->
+    <div id="nameInputContainer" class="name-input-area hidden">
+      <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20" />
+      <button id="saveNameBtn">Save</button>
+    </div>
+  </div>
+  <button class="primary-btn" id="startBtn">▶ Start Today's Run</button>
 
-<div class="card">
-<h1>Welcome back, Olivia!</h1>
-<p>Ready for some easy intervals today?</p>
-</div>
+  <div class="card">
+    <h3>Week 1 of 8</h3>
+    <div class="weekline" id="weekDots">
+      <div class="weekdot active"></div><div class="weekdot"></div><div class="weekdot"></div>
+      <div class="weekdot"></div><div class="weekdot"></div><div class="weekdot"></div>
+      <div class="weekdot"></div><div class="weekdot"></div>
+    </div>
+  </div>
 
-<button class="primary-btn" onclick="startWorkout()">
-▶ Start Today's Run
-</button>
+  <div class="card">
+    <h3>Consistency Streak 🔥</h3>
+    <div class="streak" id="streakDisplay">4 Days</div>
+  </div>
 
-<div class="card">
-<h3>Week 1 of 8</h3>
-
-<div class="weekline">
-<div class="weekdot active"></div>
-<div class="weekdot"></div>
-<div class="weekdot"></div>
-<div class="weekdot"></div>
-<div class="weekdot"></div>
-<div class="weekdot"></div>
-<div class="weekdot"></div>
-<div class="weekdot"></div>
-</div>
-</div>
-
-<div class="card">
-<h3>Consistency Streak 🔥</h3>
-<div class="streak">4 Days</div>
-</div>
-
-<div class="card">
-<h3>Recent Badges</h3>
-
-<div class="badges">
-<div class="badge">🌱 First Run</div>
-<div class="badge">🌤️ 3 Day Streak</div>
-<div class="badge">💙 Kept It Easy</div>
-</div>
-
-</div>
-
+  <div class="card">
+    <h3>Recent Badges</h3>
+    <div class="badges">
+      <div class="badge">🌱 First Run</div>
+      <div class="badge">🌤️ 3 Day Streak</div>
+      <div class="badge">💙 Kept It Easy</div>
+    </div>
+  </div>
 </div>
 
 <!-- RUN -->
-
 <div id="runScreen" class="screen hidden walk">
-
-<div class="phase" id="phase">
-Walk & Breathe
-</div>
-
-<div class="subtitle" id="subtitle">
-Focus on relaxed breathing
-</div>
-
-<div class="timer" id="timer">
-05:00
-</div>
-
-<button class="talk-btn" onclick="showTalkTest()">
-💬 Pace Check
-</button>
-
-<div class="controls">
-<button class="control-btn pause" onclick="togglePause()" id="pauseBtn">
-Pause
-</button>
-
-<button class="control-btn stop" onclick="stopWorkout()">
-Stop
-</button>
-</div>
-
+  <div class="phase" id="phase">Walk & Breathe</div>
+  <div class="subtitle" id="subtitle">Focus on relaxed breathing</div>
+  <div class="timer" id="timer">05:00</div>
+  <button class="talk-btn" id="talkBtn">💬 Pace Check</button>
+  <div class="controls">
+    <button class="control-btn pause" id="pauseBtn">Pause</button>
+    <button class="control-btn stop" id="stopBtn">Stop</button>
+  </div>
 </div>
 
 <!-- CELEBRATION -->
-
 <div id="celebrationScreen" class="screen hidden">
-
-<div class="success">
-<div class="emoji">🎉</div>
-
-<h1>You Did It!</h1>
-
-<p style="margin-top:20px;">
-You ran for <strong>8 total minutes</strong> today.
-</p>
-
-<p style="margin-top:12px;">
-That's 8 minutes more than yesterday's version of you.
-</p>
-
-<p style="margin-top:12px;">
-Be proud of that. 💙
-</p>
-
+  <div class="success">
+    <div class="emoji">🎉</div>
+    <h1 id="celebrationTitle">You Did It!</h1>
+    <p style="margin-top:20px;">You ran for <strong id="totalMinDisplay">8</strong> total minutes today.</p>
+    <p style="margin-top:12px;">That's 8 minutes more than yesterday's version of you.</p>
+    <p style="margin-top:12px;">Be proud of that. 💙</p>
+  </div>
+  <div class="card" style="margin-top:40px;">
+    <h3>Recent Runs</h3>
+    <div id="history"></div>
+  </div>
+  <button class="primary-btn" id="homeBtn">Back Home</button>
 </div>
 
-<div class="card" style="margin-top:40px;">
-<h3>Recent Runs</h3>
-<div id="history"></div>
-</div>
-
-<button class="primary-btn" onclick="goHome()">
-Back Home
-</button>
-
-</div>
-
-<!-- TALK TEST -->
-
+<!-- TALK MODAL -->
 <div id="talkModal" class="modal hidden">
-<div class="modal-box">
-
-<h3>💙 Remember</h3>
-
-<p>
-If you can't speak a full sentence right now,
-you're running too fast.
-</p>
-
-<p style="margin-top:10px;">
-Slow down to a comfortable trot.
-Today's goal is finishing, not racing.
-</p>
-
-<button class="modal-btn" onclick="hideTalkTest()">
-Got It
-</button>
-
-</div>
+  <div class="modal-box">
+    <h3>💙 Remember</h3>
+    <p>If you can't speak a full sentence right now, you're running too fast.</p>
+    <p style="margin-top:10px;">Slow down to a comfortable trot. Today's goal is finishing, not racing.</p>
+    <button class="modal-btn" id="talkGotIt">Got It</button>
+  </div>
 </div>
 
 <script>
-const workout = [
-{type:"Warm Up Walk", duration:300},
+  (function(){
+    // ----- WORKOUT PLAN (C25K week1) -----
+    const workout = [
+      { type: "Warm Up Walk", duration: 300 },   // 5 min
+      { type: "Jog", duration: 60 },             // 1 min
+      { type: "Walk", duration: 90 },            // 1.5 min
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Jog", duration: 60 },
+      { type: "Walk", duration: 90 },
+      { type: "Cool Down Walk", duration: 300 }  // 5 min
+    ];
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    // DOM refs
+    const homeScreen = document.getElementById('homeScreen');
+    const runScreen = document.getElementById('runScreen');
+    const celebrationScreen = document.getElementById('celebrationScreen');
+    const phaseEl = document.getElementById('phase');
+    const subtitleEl = document.getElementById('subtitle');
+    const timerEl = document.getElementById('timer');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const startBtn = document.getElementById('startBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const talkBtn = document.getElementById('talkBtn');
+    const talkModal = document.getElementById('talkModal');
+    const talkGotIt = document.getElementById('talkGotIt');
+    const historyEl = document.getElementById('history');
+    const totalMinDisplay = document.getElementById('totalMinDisplay');
+    const streakDisplay = document.getElementById('streakDisplay');
+    const greetingText = document.getElementById('greetingText');
+    const editNameBtn = document.getElementById('editNameBtn');
+    const nameInputContainer = document.getElementById('nameInputContainer');
+    const nameInput = document.getElementById('nameInput');
+    const saveNameBtn = document.getElementById('saveNameBtn');
+    const celebrationTitle = document.getElementById('celebrationTitle');
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    // state
+    let phaseIndex = 0;
+    let timeLeft = workout[0].duration;
+    let timerInterval = null;
+    let paused = false;
+    let totalJogSeconds = 0;
+    let isWorkoutActive = false;
+    let currentName = '';
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    // ----- name management -----
+    function loadName() {
+      const saved = localStorage.getItem('userName');
+      if (saved && saved.trim() !== '') {
+        currentName = saved.trim();
+      } else {
+        currentName = 'Olivia'; // default
+      }
+      updateGreeting();
+    }
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    function updateGreeting() {
+      greetingText.innerText = `Welcome back, ${currentName}!`;
+      // also update celebration title if visible
+      celebrationTitle.innerText = `You Did It, ${currentName}!`;
+    }
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    function saveName(newName) {
+      const trimmed = newName.trim();
+      if (trimmed === '') {
+        // if empty, fallback to default
+        currentName = 'Olivia';
+      } else {
+        currentName = trimmed;
+      }
+      localStorage.setItem('userName', currentName);
+      updateGreeting();
+      nameInputContainer.classList.add('hidden');
+      nameInput.value = '';
+    }
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    // show name input
+    function showNameEditor() {
+      nameInputContainer.classList.remove('hidden');
+      nameInput.value = currentName;
+      nameInput.focus();
+      nameInput.select();
+    }
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    // ----- workout functions -----
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
 
-{type:"Jog", duration:60},
-{type:"Walk", duration:90},
+    function updateUI() {
+      if (phaseIndex >= workout.length) return;
+      const phase = workout[phaseIndex];
+      const isJog = phase.type.includes('Jog');
+      phaseEl.innerText = isJog ? 'Gentle Jog' : (phase.type.includes('Warm') ? 'Warm Up' : 'Walk & Breathe');
+      subtitleEl.innerText = isJog ? 'Slow & Steady' : (phase.type.includes('Cool') ? 'Cool down' : 'Focus on relaxed breathing');
+      runScreen.classList.remove('walk', 'jog');
+      runScreen.classList.add(isJog ? 'jog' : 'walk');
+      timerEl.innerText = formatTime(timeLeft);
+      if (navigator.vibrate) navigator.vibrate(50);
+    }
 
-{type:"Cool Down Walk", duration:300}
-];
+    function renderTimer() {
+      timerEl.innerText = formatTime(timeLeft);
+    }
 
-let phaseIndex = 0;
-let timeLeft = workout[0].duration;
-let interval = null;
-let paused = false;
+    function nextPhase() {
+      phaseIndex++;
+      if (phaseIndex >= workout.length) {
+        finishWorkout();
+        return;
+      }
+      timeLeft = workout[phaseIndex].duration;
+      if (workout[phaseIndex].type.includes('Jog')) {
+        totalJogSeconds += timeLeft;
+      }
+      updateUI();
+    }
 
-const home = document.getElementById("homeScreen");
-const run = document.getElementById("runScreen");
-const celebration = document.getElementById("celebrationScreen");
+    function tick() {
+      if (paused) return;
+      timeLeft--;
+      if (timeLeft <= 0) {
+        nextPhase();
+        return;
+      }
+      renderTimer();
+    }
 
-function startWorkout(){
+    function startWorkout() {
+      if (isWorkoutActive) return;
+      phaseIndex = 0;
+      timeLeft = workout[0].duration;
+      totalJogSeconds = 0;
+      paused = false;
+      isWorkoutActive = true;
+      pauseBtn.innerText = 'Pause';
 
-home.classList.add("hidden");
-run.classList.remove("hidden");
+      if (workout[0].type.includes('Jog')) totalJogSeconds += timeLeft;
 
-phaseIndex = 0;
-timeLeft = workout[0].duration;
+      homeScreen.classList.add('hidden');
+      runScreen.classList.remove('hidden');
+      celebrationScreen.classList.add('hidden');
 
-updateUI();
+      updateUI();
 
-interval = setInterval(tick,1000);
-}
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(tick, 1000);
+    }
 
-function tick(){
+    function togglePause() {
+      if (!isWorkoutActive) return;
+      paused = !paused;
+      pauseBtn.innerText = paused ? 'Resume' : 'Pause';
+      if (!paused) renderTimer();
+    }
 
-if(paused) return;
+    function stopWorkout() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      isWorkoutActive = false;
+      paused = false;
+      runScreen.classList.add('hidden');
+      homeScreen.classList.remove('hidden');
+      pauseBtn.innerText = 'Pause';
+    }
 
-timeLeft--;
+    function finishWorkout() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      isWorkoutActive = false;
+      paused = false;
+      pauseBtn.innerText = 'Pause';
 
-if(timeLeft <= 0){
+      const jogMinutes = Math.round(totalJogSeconds / 60);
+      const displayMinutes = jogMinutes > 0 ? jogMinutes : 8;
 
-phaseIndex++;
+      saveRun(displayMinutes);
 
-if(phaseIndex >= workout.length){
+      runScreen.classList.add('hidden');
+      celebrationScreen.classList.remove('hidden');
+      totalMinDisplay.innerText = displayMinutes;
+      // update celebration title with name
+      celebrationTitle.innerText = `You Did It, ${currentName}!`;
+      loadHistory();
+    }
 
-finishWorkout();
-return;
-}
+    // ----- local storage (runs + streak) -----
+    function saveRun(minutes) {
+      let history = JSON.parse(localStorage.getItem('runs') || '[]');
+      history.unshift({
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        minutes: minutes,
+        name: currentName
+      });
+      if (history.length > 10) history = history.slice(0, 10);
+      localStorage.setItem('runs', JSON.stringify(history));
 
-timeLeft = workout[phaseIndex].duration;
-updateUI();
-}
+      const today = new Date().toDateString();
+      let streak = parseInt(localStorage.getItem('streak') || '0');
+      let lastDate = localStorage.getItem('lastRunDate');
+      if (lastDate === today) {
+        // same day, do nothing
+      } else if (lastDate === new Date(Date.now() - 86400000).toDateString()) {
+        streak += 1;
+      } else {
+        streak = 1;
+      }
+      localStorage.setItem('streak', String(streak));
+      localStorage.setItem('lastRunDate', today);
+      updateStreakDisplay();
+    }
 
-renderTimer();
-}
+    function loadHistory() {
+      const history = JSON.parse(localStorage.getItem('runs') || '[]');
+      if (history.length === 0) {
+        historyEl.innerHTML = `<div class="history-item" style="border-left-color:#d7dde5;">No runs yet — start today!</div>`;
+        return;
+      }
+      let html = '';
+      history.forEach(run => {
+        const nameDisplay = run.name ? run.name : 'Olivia';
+        html += `
+          <div class="history-item">
+            ✅ ${nameDisplay} · ${run.minutes} min jogging<br>
+            <span style="font-size:0.9rem;color:#718096;">${run.date}</span>
+          </div>
+        `;
+      });
+      historyEl.innerHTML = html;
+    }
 
-function updateUI(){
+    function updateStreakDisplay() {
+      const streak = parseInt(localStorage.getItem('streak') || '0');
+      streakDisplay.innerText = streak + ' Day' + (streak !== 1 ? 's' : '');
+    }
 
-const phase = workout[phaseIndex];
+    function goHome() {
+      celebrationScreen.classList.add('hidden');
+      homeScreen.classList.remove('hidden');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      isWorkoutActive = false;
+      paused = false;
+      pauseBtn.innerText = 'Pause';
+    }
 
-document.getElementById("phase").innerText =
-phase.type.includes("Jog")
-? "Gentle Jog"
-: "Walk & Breathe";
+    // ----- talk modal -----
+    function showTalkModal() { talkModal.classList.remove('hidden'); }
+    function hideTalkModal() { talkModal.classList.add('hidden'); }
 
-document.getElementById("subtitle").innerText =
-phase.type.includes("Jog")
-? "Slow & Steady"
-: "Focus on relaxed breathing";
+    // ----- event bindings -----
+    startBtn.addEventListener('click', startWorkout);
+    pauseBtn.addEventListener('click', togglePause);
+    stopBtn.addEventListener('click', stopWorkout);
+    homeBtn.addEventListener('click', goHome);
+    talkBtn.addEventListener('click', showTalkModal);
+    talkGotIt.addEventListener('click', hideTalkModal);
+    talkModal.addEventListener('click', (e) => {
+      if (e.target === talkModal) hideTalkModal();
+    });
 
-if(phase.type.includes("Jog")){
-run.classList.remove("walk");
-run.classList.add("jog");
-}else{
-run.classList.remove("jog");
-run.classList.add("walk");
-}
+    // Name editor
+    editNameBtn.addEventListener('click', showNameEditor);
+    saveNameBtn.addEventListener('click', () => {
+      saveName(nameInput.value);
+    });
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        saveName(nameInput.value);
+      }
+      if (e.key === 'Escape') {
+        nameInputContainer.classList.add('hidden');
+        nameInput.value = '';
+      }
+    });
 
-renderTimer();
+    // close name editor if click outside
+    document.addEventListener('click', (e) => {
+      if (!nameInputContainer.classList.contains('hidden')) {
+        const container = nameInputContainer;
+        const isClickInside = container.contains(e.target) || editNameBtn.contains(e.target);
+        if (!isClickInside) {
+          container.classList.add('hidden');
+          nameInput.value = '';
+        }
+      }
+    });
 
-if(navigator.vibrate){
-navigator.vibrate(200);
-}
-}
+    // keyboard shortcut: Escape to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideTalkModal();
+    });
 
-function renderTimer(){
+    // ----- init -----
+    loadName();
+    loadHistory();
+    updateStreakDisplay();
 
-let min = Math.floor(timeLeft/60);
-let sec = timeLeft%60;
-
-document.getElementById("timer").innerText =
-String(min).padStart(2,"0")
-+ ":" +
-String(sec).padStart(2,"0");
-}
-
-function togglePause(){
-
-paused = !paused;
-
-document.getElementById("pauseBtn").innerText =
-paused ? "Resume" : "Pause";
-}
-
-function stopWorkout(){
-
-clearInterval(interval);
-
-run.classList.add("hidden");
-home.classList.remove("hidden");
-}
-
-function finishWorkout(){
-
-clearInterval(interval);
-
-saveRun();
-
-run.classList.add("hidden");
-celebration.classList.remove("hidden");
-
-loadHistory();
-}
-
-function saveRun(){
-
-let history =
-JSON.parse(localStorage.getItem("runs") || "[]");
-
-history.unshift({
-date:new Date().toLocaleDateString(),
-minutes:"8"
-});
-
-localStorage.setItem(
-"runs",
-JSON.stringify(history)
-);
-}
-
-function loadHistory(){
-
-let history =
-JSON.parse(localStorage.getItem("runs") || "[]");
-
-let html="";
-
-history.forEach(run=>{
-
-html += `
-<div class="history-item">
-✓ Week 1 Day 1<br>
-${run.minutes} minutes jogging<br>
-${run.date}
-</div>
-`;
-});
-
-document.getElementById("history").innerHTML = html;
-}
-
-function goHome(){
-
-celebration.classList.add("hidden");
-home.classList.remove("hidden");
-}
-
-function showTalkTest(){
-document.getElementById("talkModal").classList.remove("hidden");
-}
-
-function hideTalkTest(){
-document.getElementById("talkModal").classList.add("hidden");
-}
+    // expose for inline calls (if any)
+    window.startWorkout = startWorkout;
+    window.togglePause = togglePause;
+    window.stopWorkout = stopWorkout;
+    window.goHome = goHome;
+    window.showTalkTest = showTalkModal;
+    window.hideTalkTest = hideTalkModal;
+  })();
 </script>
-
 </body>
 </html>
